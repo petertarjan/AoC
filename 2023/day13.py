@@ -1,4 +1,4 @@
-f=open("marci.in","rt")
+f=open("day13.in","rt")
 
 def solve(A):
     r=0
