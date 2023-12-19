@@ -23,32 +23,6 @@ for l in f:
     assert t[1][-1]=="}"
     rules[t[0]]=list(map(procrule,t[1][:-1].split(",")))
 
-def apply_rule(r,xmas):
-    for q in r:
-        if len(q)==1:
-            return q[0]
-        v=xmas[q[0]]
-        if q[1]=="<":
-            if v<q[2]: return q[3]
-        elif q[1]==">":
-            if v>q[2]: return q[3]
-    assert False
-sol=0
-for l in f:
-    s=l.rstrip()
-    assert s[0]=="{"
-    assert s[-1]=="}"
-
-    assert "".join(t.split("=")[0] for t in s[1:-1].split(","))=="xmas"
-    xmas=tuple(int(t.split("=")[1]) for t in s[1:-1].split(","))
-    rul="in"
-    while rul not in "AR":
-        rul=apply_rule(rules[rul],xmas)
-    if rul=="A":
-        sol+=sum(xmas)
-    else: assert rul=="R"
-print(sol)
-
 def count(ranges,r):
     global rules
     assert len(ranges)==8
@@ -83,4 +57,12 @@ def count(ranges,r):
                 ranges[2*var_i+1]=min(ranges[2*var_i+1],num)
                 if ranges[2*var_i+1]<ranges[2*var_i]: return ret
     assert False
+sol=0
+for l in f:
+    s=l.rstrip()
+    assert s[0]=="{" and s[-1]=="}"
+    assert "".join(t.split("=")[0] for t in s[1:-1].split(","))=="xmas"
+    xmas=tuple(int(t.split("=")[1]) for t in s[1:-1].split(","))
+    if count(list(xmas[i//2] for i in range(8)),"in")>0: sol+=sum(xmas)
+print(sol)
 print(count([1,4000,1,4000,1,4000,1,4000],"in"))   
